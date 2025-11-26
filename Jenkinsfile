@@ -6,10 +6,12 @@ pipeline {
         pollSCM('H/2 * * * *')
     }
     
+    // *** การตั้งค่า Environment Variables (ปรับปรุง) ***
     environment {
         COMPOSE_PROJECT_NAME = 'trello_clone'
-        BUN_INSTALL = "${HOME}/.bun"
-        PATH = "${BUN_INSTALL}/bin:/opt/homebrew/bin:${PATH}" // Add Homebrew bin for Docker
+        // ตั้งค่า BUN_INSTALL และ PATH ให้ Jenkins รู้จัก bun
+        BUN_INSTALL = "${HOME}/.bun" 
+        PATH = "${BUN_INSTALL}/bin:${PATH}" 
     }
     
     stages {
@@ -49,18 +51,12 @@ NODE_ENV=production
             }
         }
         
-        stage('Install Bun') {
-            steps {
-                sh '''
-                    curl -fsSL https://bun.sh/install | bash
-                '''
-            }
-        }
-
+        // *** ลบ stage('Install Bun') ออกเพื่อความเร็ว เพราะติดตั้งถาวรแล้ว ***
         
         stage('Install Dependencies') {
             steps {
-                sh '${BUN_INSTALL}/bin/bun install'
+                // เรียกใช้ bun ได้โดยตรง เพราะ PATH ถูกตั้งค่าแล้ว
+                sh 'bun install'
             }
         }
         
@@ -89,19 +85,15 @@ NODE_ENV=production
         
         stage('Prisma Migrate') {
             steps {
-                sh '''
-                    export PATH=${BUN_INSTALL}/bin:$PATH
-                    bunx prisma migrate deploy
-                '''
+                // ไม่ต้อง export PATH ซ้ำ
+                sh 'bunx prisma migrate deploy'
             }
         }
         
         stage('Build Next.js') {
             steps {
-                sh '''
-                    export PATH=${BUN_INSTALL}/bin:$PATH
-                    bun run build
-                '''
+                // ไม่ต้อง export PATH ซ้ำ
+                sh 'bun run build'
             }
         }
         
@@ -129,8 +121,7 @@ NODE_ENV=production
                             sleep 2
                         done
                         echo "Health check failed - application may not be responding"
-                        # Don't fail the build, just warn
-                        exit 0
+                        exit 0 // เปลี่ยนเป็น exit 1 เพื่อให้ Build fail หาก Health Check ล้มเหลว (ถ้าต้องการ)
                     '''
                 }
             }
