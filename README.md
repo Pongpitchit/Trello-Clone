@@ -1,4 +1,4 @@
-# Trello Clone
+# Trello Clone 1
 
 A full-stack Trello clone built with Next.js 16, Prisma, PostgreSQL, and Bun runtime. Features include drag-and-drop task management, user authentication, and real-time board updates.
 
