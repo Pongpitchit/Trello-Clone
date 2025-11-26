@@ -52,8 +52,6 @@ NODE_ENV=production
         stage('Install Bun') {
             steps {
                 sh '''
-                    sudo apt-get update
-                    sudo apt-get install -y unzip
                     curl -fsSL https://bun.sh/install | bash
                 '''
             }
