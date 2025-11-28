@@ -140,7 +140,7 @@ export default function Navbar() {
   return (
     <header className="w-full py-6 px-8 flex justify-between items-center">
       <h1 className="text-3xl font-bold inline-block text-transparent bg-clip-text bg-linear-to-t from-blue-900 to-blue-500">
-        Trello Clone
+        Trello | DIT312
       </h1>
 
       <nav className="flex items-center gap-x-4">
