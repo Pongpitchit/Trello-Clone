@@ -2,25 +2,19 @@ pipeline {
     agent any
     
     triggers {
-        // Poll SCM every 2 minutes as fallback if webhook fails
+
         pollSCM('H/2 * * * *')
     }
     
     environment {
         COMPOSE_PROJECT_NAME = 'trello_clone'
         
-        // 1. กำหนดตำแหน่งติดตั้ง Bun
         BUN_INSTALL = "${HOME}/.bun" 
         
-        // 2. กำหนด Path สำหรับ Docker Homebrew
-        // *** แก้ไขบรรทัดนี้ตามผลลัพธ์ของ 'which docker' ***
         DOCKER_BIN_PATH = '/opt/homebrew/bin' 
         
-        // 3. รวม Path ทั้งหมดเข้าด้วยกัน: (Bun -> Docker/Homebrew -> PATH เดิม)
-        // การเพิ่ม DOCKER_BIN_PATH เข้าไปทำให้ Jenkins รู้จักคำสั่ง docker และ docker compose
         PATH = "${BUN_INSTALL}/bin:${DOCKER_BIN_PATH}:${PATH}" 
         
-        // ... (ตัวแปรอื่นๆ) ...
     }
     
     stages {

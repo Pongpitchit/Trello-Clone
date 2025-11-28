@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Trello Clone",
-  description: "Trello Clone",
+  title: "Trello",
+  description: "Trello",
 };
 
 export default function RootLayout({
